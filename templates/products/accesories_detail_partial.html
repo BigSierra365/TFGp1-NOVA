@@ -1,0 +1,128 @@
+{# templates/partials/_accessory_modal.html #}
+<div class="modal fade" id="accModal-{{ accessory.id }}" tabindex="-1"
+     aria-labelledby="accModalLabel-{{ accessory.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-lg shadow-lg">
+      <div class="modal-header border-bottom">
+        <h5 class="modal-title fw-bold" id="accModalLabel-{{ accessory.id }}">
+          {{ accessory.name }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body p-4">
+        {% if accessory.card_image %}
+          <img src="{{ accessory.card_image.url }}" alt="{{ accessory.name }}"
+               class="img-fluid rounded mb-4" style="object-fit:cover; height:12rem; width:100%;">
+        {% elif accessory.images.first %}
+          <img src="{{ accessory.images.first.image.url }}" alt="{{ accessory.name }}"
+               class="img-fluid rounded mb-4" style="object-fit:cover; height:12rem; width:100%;">
+        {% endif %}
+        <h5 class="modal-title fw-bold" id="accModalLabel-{{ accessory.id }}">
+          {{ accessory.name }}
+        </h5>
+        <h5 class="modal-title" id="accModalLabel-{{ accessory.id }}">
+          {{ accessory.price }} €
+        </h5>
+        <br>
+
+        <h6 class="fw-bold mb-1">Descripción</h6>
+        <p class="mb-3 small text-muted">{{ accessory.description }}</p>
+        <br>
+
+        <h6 class="fw-bold mb-1">Características técnicas</h6>
+        <p class="mb-3 small text-muted">{{ accessory.procuct_details }}</p>
+        <br>
+
+        <h6 class="fw-bold mb-1">Compatibilidad</h6>
+        {% if accessory.compatible_with.exists %}
+          <ul class="small text-muted mb-0">
+            {% for prod in accessory.compatible_with.all %}
+              <li>{{ prod.name }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="small text-muted mb-0">No hay productos asociados.</p>
+        {% endif %}
+      </div>
+      <div class="modal-footer border-top">
+        <form class="w-100 d-flex gap-2" id="add-accessory-form-{{ accessory.id }}">
+          {% csrf_token %}
+          <div class="input-group">
+            <span class="input-group-text">Cantidad</span>
+            <input type="number" class="form-control" name="quantity" min="1" value="1">
+          </div>
+          <button type="button" class="btn btn-primary flex-grow-1 add-accessory-btn" 
+                  data-accessory-id="{{ accessory.id }}"
+                  data-accessory-name="{{ accessory.name }}"
+                  data-accessory-price="{{ accessory.price }}">
+            Añadir al carrito
+          </button>
+        </form>
+      </div>
+      
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Buscar todos los botones de añadir accesorios en este modal
+        const addBtn = document.querySelector('.add-accessory-btn[data-accessory-id="{{ accessory.id }}"]');
+        if (addBtn) {
+          addBtn.addEventListener('click', function() {
+            // Obtener los datos del accesorio
+            const accessoryId = this.getAttribute('data-accessory-id');
+            const formElement = document.getElementById(`add-accessory-form-${accessoryId}`);
+            const quantityInput = formElement.querySelector('input[name="quantity"]');
+            const quantity = parseInt(quantityInput.value) || 1;
+            
+            // Crear FormData para enviar
+            const formData = new FormData();
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+            formData.append('quantity', quantity);
+            
+            // Realizar la petición AJAX
+            fetch(`/cart/add/${accessoryId}/`, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // Actualizar contador del carrito
+                const cartCounter = document.getElementById('cart-count');
+                if (cartCounter) {
+                  cartCounter.textContent = data.cart_count;
+                }
+                
+                // Mostrar notificación de éxito
+                const popup = document.createElement('div');
+                popup.textContent = 'Producto añadido al carrito';
+                popup.className = 'position-fixed top-0 end-0 m-4 p-2 bg-success text-white rounded shadow';
+                popup.style.zIndex = '9999';
+                document.body.appendChild(popup);
+                
+                // Cerrar el modal
+                const modal = document.getElementById('accModal-{{ accessory.id }}');
+                const modalInstance = bootstrap.Modal.getInstance(modal);
+                if (modalInstance) {
+                  modalInstance.hide();
+                }
+                
+                // Eliminar la notificación después de 2 segundos
+                setTimeout(() => popup.remove(), 2000);
+              } else {
+                alert('Error al añadir el producto al carrito');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Ocurrió un error al añadir el producto al carrito');
+            });
+          });
+        }
+      });
+      </script>
+    </div>
+  </div>
+</div>

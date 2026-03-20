@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Error en el Pago{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <!-- Breadcrumb -->
+  <nav class="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+    <ol class="list-reset flex space-x-2">
+      <li><a href="{% url 'home' %}" class="hover:text-blue-600">Inicio</a></li>
+      <li>&#47;</li>
+      <li><a href="{% url 'shopping_cart' %}" class="hover:text-blue-600">Carrito</a></li>
+      <li>&#47;</li>
+      <li class="text-gray-700">Error en el pago</li>
+    </ol>
+  </nav>
+
+  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow p-8 text-center">
+    <div class="w-20 h-20 bg-yellow-100 text-yellow-600 rounded-full mx-auto flex items-center justify-center mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    </div>
+    
+    <h1 class="text-3xl font-bold mb-4 text-gray-800">Error en el Proceso de Pago</h1>
+    
+    <p class="text-lg text-gray-600 mb-4">
+      Ha ocurrido un problema al procesar tu pago:
+    </p>
+    
+    <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+      <p class="text-red-600">{{ error }}</p>
+    </div>
+    
+    <div class="space-y-4">
+      <p class="text-gray-500">
+        Por favor, intenta realizar el pago nuevamente o contacta con nuestro servicio de atención al cliente si el problema persiste.
+      </p>
+      
+      <div class="mt-8 space-x-4">
+        <a href="{% url 'shopping_cart' %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-md font-medium">
+          Volver al carrito
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

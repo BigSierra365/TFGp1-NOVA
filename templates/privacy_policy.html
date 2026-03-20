@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Políticas de Privacidad | NOVA{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16">
+  <div class="max-w-4xl mx-auto">
+    <!-- Encabezado -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-light text-gray-900 mb-4">Política de Privacidad</h1>
+      <div class="w-20 h-1 bg-blue-600 mx-auto"></div>
+      <p class="text-gray-600 mt-4">Última actualización: Junio 2024</p>
+    </div>
+    
+    <!-- Contenido de la política -->
+    <div class="prose prose-lg max-w-none text-gray-700">
+      <p>
+        En NOVA, accesible desde www.novadrones.com, una de nuestras principales prioridades es la privacidad de 
+        nuestros visitantes. Este documento de Política de Privacidad contiene los tipos de información que recopilamos 
+        y registramos y cómo la utilizamos.
+      </p>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Información que recopilamos</h2>
+      
+      <p>
+        Cuando te registras en nuestro sitio, como parte del proceso, recopilamos la información personal 
+        que nos proporcionas, como tu nombre, dirección y correo electrónico.
+      </p>
+      
+      <p>
+        Tu información personal será utilizada únicamente para los motivos específicos indicados anteriormente, 
+        a menos que nos proporciones un permiso específico para utilizarla de otra manera.
+      </p>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Cookies y tecnologías de seguimiento</h2>
+      
+      <p>
+        Utilizamos cookies para mantener la sesión de tu cuenta y, a veces, para personalizar el contenido 
+        según tus preferencias. Las cookies son pequeños archivos que un sitio o su proveedor de servicios 
+        transfiere al disco duro de tu computadora a través de tu navegador web (si lo permites).
+      </p>
+      
+      <p>
+        Estas cookies permiten al sitio reconocer tu navegador y, si tienes una cuenta registrada, 
+        asociarte con tu cuenta.
+      </p>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Uso de tu información</h2>
+      
+      <p>Podemos utilizar la información que recopilamos de ti cuando te registras de las siguientes maneras:</p>
+      
+      <ul class="list-disc pl-5 space-y-2">
+        <li>Para personalizar tu experiencia y permitirnos entregar el tipo de contenido en el que estás más interesado.</li>
+        <li>Para mejorar nuestro sitio web para servirte mejor.</li>
+        <li>Para permitirnos brindarte un mejor servicio al responder a tus solicitudes de atención al cliente.</li>
+        <li>Para procesar transacciones de forma rápida.</li>
+        <li>Para enviar correos electrónicos periódicos sobre tu pedido u otros productos y servicios.</li>
+      </ul>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Protección de tu información</h2>
+      
+      <p>
+        Implementamos una variedad de medidas de seguridad cuando un usuario ingresa, envía o accede a su información 
+        para mantener la seguridad de su información personal. Toda la información sensible se transmite a través de 
+        tecnología Secure Socket Layer (SSL).
+      </p>
+      
+      <p>
+        Todas las transacciones de pago son procesadas a través de un proveedor de gateway y no se almacenan ni 
+        procesan en nuestros servidores.
+      </p>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Divulgación a terceros</h2>
+      
+      <p>
+        No vendemos, intercambiamos ni transferimos a terceros tu información de identificación personal. 
+        Esto no incluye terceros de confianza que nos ayudan a operar nuestro sitio web, llevar a cabo nuestro 
+        negocio o brindarte servicios, siempre que esas partes acuerden mantener esta información confidencial.
+      </p>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Cumplimiento de GDPR</h2>
+      
+      <p>
+        Cumplimos con las disposiciones del Reglamento General de Protección de Datos (GDPR) de la UE. Si resides en la Unión Europea, 
+        tienes ciertos derechos con respecto a tus datos personales:
+      </p>
+      
+      <ul class="list-disc pl-5 space-y-2">
+        <li>El derecho a ser informado sobre cómo se utiliza tu información personal.</li>
+        <li>El derecho de acceso a la información personal que tenemos sobre ti.</li>
+        <li>El derecho a rectificar información inexacta o incompleta.</li>
+        <li>El derecho a la eliminación de tu información personal.</li>
+        <li>El derecho a restringir el procesamiento de tu información personal.</li>
+        <li>El derecho a la portabilidad de datos.</li>
+        <li>El derecho a objetar cómo procesamos tu información personal.</li>
+      </ul>
+      
+      <h2 class="text-2xl font-medium text-gray-900 mt-8 mb-4">Contacto</h2>
+      
+      <p>
+        Si tienes alguna pregunta sobre esta política de privacidad, puedes contactarnos a través de:
+      </p>
+      
+      <p>
+        <strong>Email:</strong> privacy@novadrones.com<br>
+        <strong>Teléfono:</strong> +34 123 456 789
+      </p>
+    </div>
+    
+    <!-- Botón de volver -->
+    <div class="mt-12 text-center">
+      <a href="{% url 'home' %}" class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-lg transition-colors">
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

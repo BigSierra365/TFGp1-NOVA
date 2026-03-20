@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pago Exitoso{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+  <!-- Breadcrumb -->
+  <nav class="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+    <ol class="list-reset flex space-x-2">
+      <li><a href="{% url 'home' %}" class="hover:text-blue-600">Inicio</a></li>
+      <li>&#47;</li>
+      <li class="text-gray-700">Pago completado</li>
+    </ol>
+  </nav>
+
+  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow p-8 text-center">
+    <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full mx-auto flex items-center justify-center mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+    
+    <h1 class="text-3xl font-bold mb-4 text-gray-800">¡Pago completado con éxito!</h1>
+    
+    <p class="text-lg text-gray-600 mb-8">
+      Tu pedido ha sido procesado correctamente. Recibirás un correo electrónico con los detalles de tu compra.
+    </p>
+    
+    <div class="space-y-4">
+      <p class="text-gray-500">
+        Gracias por confiar en nosotros para tus productos de DJI.
+      </p>
+      
+      <div class="mt-8">
+        <a href="{% url 'home' %}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white py-3 px-8 rounded-md font-medium">
+          Volver a la tienda
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

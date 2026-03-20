@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accesorios | NOVA{% endblock %}
+
+{% block content %}
+<!-- Fade-in general -->
+<div x-data="{ show: false }" x-init="setTimeout(() => show = true, 100)" x-show="show" 
+     x-transition:enter="transition-opacity ease-out duration-300" 
+     x-transition:enter-start="opacity-0" 
+     x-transition:enter-end="opacity-100">
+
+  <!-- Breadcrumb + Hero -->
+  <div class="container bg-white mx-auto px-4 py-8">
+    <nav class="text-sm text-gray-500 mb-6" aria-label="Breadcrumb">
+      <ol class="list-reset flex space-x-2">
+        <li><a href="{% url 'home' %}" class="hover:text-blue-600">Inicio</a></li>
+        <li>&#47;</li>
+        <li class="text-gray-700">Accesorios</li>
+      </ol>
+    </nav>
+  </div>
+
+  <style>
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in-section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-element {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in-element.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .delay-200 {
+      transition-delay: 200ms;
+    }
+    .delay-400 {
+      transition-delay: 400ms;
+    }
+  </style>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Función para verificar si un elemento es visible en el viewport
+      function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+          rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+          rect.bottom >= 0
+        );
+      }
+      
+      // Función para activar animaciones
+      function activateAnimations() {
+        // Activar secciones fade-in
+        document.querySelectorAll('.fade-in-section:not(.active)').forEach(function(section) {
+          if (isElementInViewport(section)) {
+            section.classList.add('active');
+            
+            // Activar elementos dentro de la sección
+            section.querySelectorAll('.fade-in-element').forEach(function(element, index) {
+              setTimeout(function() {
+                element.classList.add('active');
+              }, index * 200); // Escalonamiento de 200ms
+            });
+          }
+        });
+        
+        // Activar elementos fade-in independientes
+        document.querySelectorAll('.fade-in-element:not(.active)').forEach(function(element) {
+          if (isElementInViewport(element)) {
+            element.classList.add('active');
+          }
+        });
+      }
+      
+      // Activar inicialmente y en cada scroll
+      activateAnimations();
+      window.addEventListener('scroll', activateAnimations);
+    });
+  </script>
+  
+  <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white py-16 fade-in-section">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl md:text-5xl font-light mb-4 fade-in-element">Accesorios</h1>
+      <p class="text-xl text-blue-100 max-w-3xl fade-in-element delay-200">
+        Encuentra todos los complementos y recambios para tus equipos DJI.
+      </p>
+    </div>
+  </div>
+
+  <!-- Main grid + sidebar -->
+  <div class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-8">
+
+      <!-- Sidebar filtros -->
+      <div class="w-full lg:w-64 flex-shrink-0">
+        <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Filtrar por categoría</h3>
+          <div class="space-y-2 relative">
+            <!-- Indicador activo -->
+            <div id="activeIndicator" class="absolute left-0 top-0 w-full h-10 bg-blue-50 
+                        rounded-md transition-all duration-300 ease-in-out transform" style="display: none;">
+            </div>
+
+            <!-- Todas las categorías -->
+            <a href="{% url 'accessories' %}" 
+               class="relative z-10 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 
+                      {% if not selected_category %}text-blue-700{% else %}text-gray-700 hover:bg-gray-50{% endif %}"
+               x-data="{ isActive: {% if not selected_category %}true{% else %}false{% endif %} }"
+               @mouseenter="let idx=0; document.getElementById('activeIndicator').style.transform=`translateY(${idx*40}px)`"
+               :class="{ 'text-blue-700': isActive }">
+              Todas las categorías
+            </a>
+
+            <!-- Cada categoría padre -->
+            {% for cat in categories_with_series %}
+            <a href="?category={{ cat.code }}" 
+               class="relative z-10 block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 
+                      {% if selected_category == cat.code %}text-blue-700{% else %}text-gray-700 hover:bg-gray-50{% endif %}"
+               x-data="{ isActive: {% if selected_category == cat.code %}true{% else %}false{% endif %} }"
+               @mouseenter="let idx={{ forloop.counter }}; document.getElementById('activeIndicator').style.transform=`translateY(${idx*40}px)`"
+               :class="{ 'text-blue-700': isActive }">
+              {{ cat.label }}
+            </a>
+            {% endfor %}
+          </div>
+
+          <!-- Sub-filtro series -->
+          {% if selected_category %}
+          <div class="mt-6">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Series</h4>
+            <ul class="space-y-1">
+              <li>
+                <a href="?category={{ selected_category }}"
+                  class="block px-2 py-1 rounded-md text-sm transition-colors
+                          {% if not selected_series %}bg-blue-100 text-blue-700{% else %}text-gray-700 hover:bg-gray-50{% endif %}">
+                  Todas las series
+                </a>
+              </li>
+              {% for cat in categories_with_series %}
+                {% if cat.code == selected_category %}
+                  {% for serie in cat.series %}
+                    <li>
+                      <a href="?category={{ selected_category }}&series={{ serie|urlencode }}"
+                        class="block px-2 py-1 rounded-md text-sm transition-colors
+                                {% if selected_series == serie %}bg-blue-100 text-blue-700{% else %}text-gray-700 hover:bg-gray-50{% endif %}">
+                        {{ serie }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Script activo -->
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const links = document.querySelectorAll('.space-y-2.relative > a');
+          const indicator = document.getElementById('activeIndicator');
+          links.forEach((lnk, i) => {
+            if (lnk.classList.contains('text-blue-700')) {
+              indicator.style.transform = `translateY(${i*40}px)`;
+              indicator.style.display = 'block';
+            }
+          });
+        });
+        </script>
+      </div>
+
+      <!-- Grid de accesorios -->
+      <div class="flex-1">
+        <div class="mb-8 flex justify-between items-center">
+          <div class="text-gray-600">
+            Mostrando <span class="font-medium">{{ accessories|length }}</span> accesorios
+            {% if selected_category %}
+            <span class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+              {{ selected_category_label }}
+              {% if selected_series %}/ {{ selected_series }}{% endif %}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if accessories %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+             x-data="{ show: false }" 
+             x-init="setTimeout(() => show = true, 100)" 
+             x-show="show"
+             x-transition:enter="transition-all ease-out duration-500"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0">
+
+          {% for acc in accessories %}
+          <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl 
+                      transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
+            <div data-bs-toggle="modal" data-bs-target="#accModal-{{ acc.id }}" class="block flex-1 flex flex-col ">
+              <div class="relative pt-[100%] bg-gray-100">
+                {% if acc.card_image %}
+                <img src="{{ acc.card_image.url }}" alt="{{ acc.name }}"
+                     class="absolute top-0 left-0 w-full h-full object-cover
+                            transition-transform duration-500 hover:scale-105">
+                {% elif acc.images.first %}
+                <img src="{{ acc.images.first.image.url }}" alt="{{ acc.name }}"
+                     class="absolute top-0 left-0 w-full h-full object-cover
+                            transition-transform duration-500 hover:scale-105">
+                {% else %}
+                <div class="absolute inset-0 flex items-center justify-center bg-gray-200">
+                  <span class="text-gray-400">Sin imagen</span>
+                </div>
+                {% endif %}
+              </div>
+              <div class="p-4 flex-1 flex flex-col">
+                <h3 class="text-lg font-medium text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                  {{ acc.name }}
+                </h3>
+                <div class="mt-auto">
+                  <span class="text-lg font-bold text-gray-900">{{ acc.price }} €</span>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 pb-4">
+              <button type="button"
+                      class="block w-full bg-indigo-800 hover:bg-indigo-900 text-white text-center py-2 px-4 rounded-full transition-colors"
+                      data-bs-toggle="modal"
+                      data-bs-target="#accModal-{{ acc.id }}">
+                Ver detalles
+              </button>
+            </div>
+          </div>
+          {# Incluimos aquí el modal partial #}
+          {% include 'products/accesories_detail_partial.html' with accessory=acc %}
+
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12 w-full">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          <h3 class="mt-2 text-lg font-medium text-gray-900">No se encontraron accesorios</h3>
+          <p class="mt-1 text-gray-500">
+            {% if selected_series %}
+              No hay accesorios para “{{ selected_series }}”.
+            {% else %}
+              Pronto añadiremos más accesorios.
+            {% endif %}
+          </p>
+          <div class="mt-6">
+            <a href="{% url 'accessories' %}"
+               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm 
+                      text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+              Ver todos
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section para Accesorios -->
+  <div class="bg-gray-50 py-12">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-light text-gray-900 sm:text-4xl">
+          ¿Por qué elegir nuestros accesorios?
+        </h2>
+        <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+          Complementos diseñados para mejorar tu experiencia DJI en cada vuelo.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- 1. Carga Rápida -->
+        <div class="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-green-100 text-green-600 mb-4">
+            <!-- Icono de rayo viteza (charging) -->
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">Carga Ultra-Rápida</h3>
+          <p class="mt-2 text-gray-600">
+            Baterías y cargadores optimizados para recargas en menos tiempo y más ciclos de vida.
+          </p>
+        </div>
+
+        <!-- 2. Compatibilidad Universal -->
+        <div class="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600 mb-4">
+            <!-- Icono de enchufe universal -->
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M14 10h4a2 2 0 012 2v2m-6 4h-4a2 2 0 01-2-2v-2m6-4V6m0 0L9 3m5 3l3-3" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">Compatibilidad Universal</h3>
+          <p class="mt-2 text-gray-600">
+            Diseñados para encajar con todas las series DJI y la mayoría de dispositivos compatibles.
+          </p>
+        </div>
+
+        <!-- 3. Construcción Duradera -->
+        <div class="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-md bg-yellow-100 text-yellow-600 mb-4">
+            <!-- Icono de escudo o durabilidad -->
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900">Construcción Robusta</h3>
+          <p class="mt-2 text-gray-600">
+            Materiales resistentes al desgaste y al agua para soportar cualquier condición.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alpine.js -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+{% endblock %}

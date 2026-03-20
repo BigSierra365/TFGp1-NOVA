@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}Inicio | NOVA{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section Carousel inspired by DJI -->
+<div class="relative w-full h-svh overflow-hidden bg-black pt-16">
+  <!-- Carousel Container -->
+  <!-- Slides -->
+  <div id="dji-carousel" class="w-full h-full">
+    {% for slide in slides %}
+    <div
+      class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out flex flex-col justify-center items-center"
+      data-active="{{ forloop.first|yesno:'true,false' }}"
+    >
+      {# background #}
+      <div
+        class="absolute inset-0 bg-cover bg-center"
+        style="background-image: url('{{ slide.image }}');"
+      ></div>
+      
+
+      {# contenido de texto #}
+      <div class="relative top-2 z-10 text-center px-4 max-w-4xl mx-auto text-white">
+        <h5
+          class="text-sm font-bold mb-1 tracking-wide opacity-80
+                 transform translate-y-4 transition-transform duration-700 delay-300"
+        >{{ slide.product_details }}</h5><!-- o tu propio subtítulo -->
+        <h2
+          class="text-7xl font-extrabold mb-4 tracking-wide
+                 transform translate-y-4 transition-transform duration-700 delay-500"
+        >{{ slide.name }}</h2>
+        <p
+          class="text-xl font-light mb-6 tracking-wide
+                 transform translate-y-4 transition-transform duration-700 delay-700"
+        >{{ slide.slogan }}</p>
+        <a
+          href="{% url 'product_detail' slide.slug %}"
+          class="inline-block border border-gray-900 text-white bg-gray-800 px-6 py-2 rounded-full
+                 hover:bg-gray-700 transform translate-y-4
+                 transition-all duration-700 delay-900"
+        >Ver más</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Carousel Navigation -->
+  <div class="absolute bottom-10 left-0 right-0 flex justify-center space-x-2 z-20">
+    {% for slide in slides %}
+    <button
+      class="carousel-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100
+             transition-all duration-300
+             {% if forloop.first %}bg-opacity-100{% endif %}"
+      data-slide="{{ forloop.counter0 }}"
+    ></button>
+    {% endfor %}
+  </div>
+
+  <!-- Carousel Controls -->
+  <button class="carousel-control absolute top-1/2 left-4 transform -translate-y-1/2 text-white opacity-50 hover:opacity-100 transition-opacity duration-300 z-20">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  </button>
+  <button class="carousel-control absolute top-1/2 right-4 transform -translate-y-1/2 text-white opacity-50 hover:opacity-100 transition-opacity duration-300 z-20">
+     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+     </svg>
+  </button>
+</div>
+
+<!-- JavaScript para el carrusel (igual al tuyo) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const slides    = document.querySelectorAll('.carousel-slide');
+  const dots      = document.querySelectorAll('.carousel-dot');
+  const prevBtn   = document.querySelectorAll('.carousel-control')[0];
+  const nextBtn   = document.querySelectorAll('.carousel-control')[1];
+  let currentSlide = 0, interval;
+
+  function showSlide(i) {
+    slides.forEach((s, idx) => {
+      s.classList.toggle('opacity-100', idx === i);
+      s.classList.toggle('opacity-0',    idx !== i);
+      dots[idx].classList.toggle('bg-opacity-100', idx === i);
+      dots[idx].classList.toggle('bg-opacity-50',  idx !== i);
+      // resetear textos
+      s.querySelectorAll('h5,h2,a').forEach(el => el.classList.add('translate-y-4'));
+    });
+    // animar textos
+    setTimeout(() => {
+      slides[i].querySelectorAll('h5,h2,a').forEach(el => el.classList.remove('translate-y-4'));
+    }, 100);
+    currentSlide = i;
+  }
+
+  function startAuto() {
+    interval = setInterval(() => showSlide((currentSlide+1)%slides.length), 6000);
+  }
+  function stopAuto() { clearInterval(interval); }
+
+  prevBtn.addEventListener('click', () => { stopAuto(); showSlide((currentSlide-1+slides.length)%slides.length); startAuto(); });
+  nextBtn.addEventListener('click', () => { stopAuto(); showSlide((currentSlide+1)%slides.length); startAuto(); });
+  dots.forEach((d,i)=> d.addEventListener('click', ()=>{ stopAuto(); showSlide(i); startAuto(); }));
+
+  showSlide(0);
+  startAuto();
+});
+</script>
+
+
+<!-- Bloque adicional con animación de texto -->
+<div class="py-16 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl mb-8">
+      Descubre todo lo que podemos ofrecerte
+    </h2>
+    
+    <div class="bg-gray-800 rounded-xl shadow-2xl p-8 mx-auto max-w-3xl transform transition-all duration-300 hover:scale-[1.02] hover:shadow-indigo-500/30">
+      <p class="text-indigo-300 text-xl mb-4">En NOVA somos expertos en</p>
+      <div class="h-16 flex items-center justify-center">
+        <p id="typing-text" class="text-white text-3xl font-bold"></p>
+      </div>
+      <p class="text-gray-300 mt-6">
+        Tu destino de confianza para la tecnología más innovadora.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Script para la animación de escritura/borrado -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const typingTextElement = document.getElementById('typing-text');
+    const phrases = [
+      'Tecnología de drones avanzada',
+      'Soluciones aéreas profesionales',
+      'Equipos de fotografía de última generación',
+      'Accesorios premium para creadores',
+      'Soporte técnico especializado'
+    ];
+    
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingDelay = 100;
+    
+    function typeEffect() {
+      const currentPhrase = phrases[phraseIndex];
+      
+      if (isDeleting) {
+        // Borrar texto
+        typingTextElement.textContent = currentPhrase.substring(0, charIndex - 1);
+        charIndex--;
+        typingDelay = 25; // Más rápido al borrar
+      } else {
+        // Escribir texto
+        typingTextElement.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+        typingDelay = 100; // Más lento al escribir
+      }
+      
+      // Cambiar dirección o frase
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        // Pausa al final de escribir
+        isDeleting = true;
+        typingDelay = 1500; // Pausa antes de comenzar a borrar
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length; // Siguiente frase
+        typingDelay = 500; // Pausa antes de comenzar a escribir
+      }
+      
+      setTimeout(typeEffect, typingDelay);
+    }
+    
+    // Iniciar la animación
+    typeEffect();
+  });
+</script>
+
+<!-- Sección Todos los Productos (excluyendo categoría Accesorio) -->
+<div class="py-16 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h3 class="text-2xl font-bold text-gray-900 mb-8">Productos disponibles</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {% for product in products_no_accesory %}
+      <a href="{% url 'product_detail' product.slug %}" class="group relative block h-64 rounded-lg overflow-hidden shadow-lg transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl" style="background-image: url('{% if product.images.all.first %}{{ product.images.all.first.image.url }}{% elif product.card_image %}{{ product.card_image.url }}{% else %}{% static "img/no-image.png" %}{% endif %}'); background-size: cover; background-position: center;">
+        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70 transition-opacity duration-300 ease-in-out group-hover:opacity-80"></div>
+        <div class="relative z-10 p-6 flex flex-col justify-end h-full transform transition duration-300 ease-in-out">
+          <h4 class="text-white text-xl font-bold transform transition-all duration-300 ease-in-out group-hover:translate-y-0">{{ product.name }}</h4>
+          {% if product.slogan %}<p class="text-white text-base mt-1 transform transition-all duration-300 ease-in-out">{{ product.slogan }}</p>{% endif %}
+          <span class="mt-4 inline-block text-white font-medium border-b border-white transform transition-all duration-300 ease-in-out group-hover:border-indigo-300 group-hover:text-indigo-200">Ver más</span>
+        </div>
+      </a>
+      {% empty %}
+      <p class="text-gray-600">No hay productos disponibles.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

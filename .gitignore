@@ -1,0 +1,40 @@
+# Python & Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+.venv/
+venv/
+.env
+
+# Database
+db.sqlite3
+db.sqlite3-journal
+
+# Media & Static
+media/
+staticfiles/
+static/
+
+# AI & Heavy Files
+*.pt
+*.weights
+*.onnx
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node & CSS
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Exclusiones Adicionales Solicitadas
+README.md

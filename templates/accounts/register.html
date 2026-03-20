@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-no-repeat bg-cover bg-fixed" style="background-image: url('{% static "img/accounts-bg.jpg" %}');">
+  <div class="max-w-md w-full space-y-6 bg-white p-10 rounded-xl shadow-lg">
+    <div class="text-center">
+      <img src="{% static 'img/NOVA_logo.svg' %}" alt="NOVA Logo" class="h-24 bg-black rounded-md mx-auto mb-4">
+      <h2 class="text-center text-3xl font-extrabold text-gray-900">
+        Crear cuenta
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Regístrate para una nueva cuenta
+      </p>
+    </div>
+    <form class="mt-8 space-y-6" method="post">
+      {% csrf_token %}
+      <div class="rounded-md shadow-sm space-y-4">
+        <div>
+          <label for="id_username" class="block text-sm font-medium text-gray-700">Usuario</label>
+          <input type="text" name="username" id="id_username" maxlength="150" autocapitalize="none" autocomplete="username" required
+            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm mt-1"
+            placeholder="Nombre de usuario">
+          {% if form.username.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.username.errors }}</p>
+          {% endif %}
+          {% if form.username.help_text %}
+            <p class="text-gray-500 text-xs mt-1">{{ form.username.help_text }}</p>
+          {% endif %}
+        </div>
+        
+        <div>
+          <label for="id_email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" name="email" id="id_email" required
+            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm mt-1"
+            placeholder="Email">
+          {% if form.email.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.email.errors }}</p>
+          {% endif %}
+          {% if form.email.help_text %}
+            <p class="text-gray-500 text-xs mt-1">{{ form.email.help_text }}</p>
+          {% endif %}
+        </div>
+        
+        <div>
+          <label for="id_password1" class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <input type="password" name="password1" id="id_password1" required
+            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm mt-1"
+            placeholder="Contraseña">
+          {% if form.password1.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.password1.errors }}</p>
+          {% endif %}
+          {% if form.password1.help_text %}
+            <ul class="text-gray-500 text-xs mt-1 list-disc pl-5 space-y-0.5">
+              <li>La contraseña no puede ser demasiado similar a tu información personal.</li>
+              <li>La contraseña debe contener al menos 8 caracteres.</li>
+              <li>La contraseña no puede ser una contraseña comúnmente utilizada.</li>
+              <li>La contraseña no puede ser completamente numérica.</li>
+            </ul>
+          {% endif %}
+        </div>
+        
+        <div>
+          <label for="id_password2" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+          <input type="password" name="password2" id="id_password2" required
+            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm mt-1"
+            placeholder="Confirmar contraseña">
+          {% if form.password2.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.password2.errors }}</p>
+          {% endif %}
+          {% if form.password2.help_text %}
+            <p class="text-gray-500 text-xs mt-1">{{ form.password2.help_text }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="rounded-md bg-red-50 p-4 mb-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">Error de registro</h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div>
+        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg class="h-5 w-5 text-emerald-500 group-hover:text-emerald-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+            </svg>
+          </span>
+          Registrarse
+        </button>
+      </div>
+    </form>
+
+    <div class="text-sm text-center mt-6">
+      <p>¿Ya tienes cuenta? <a href="{% url 'login' %}" class="font-medium text-emerald-600 hover:text-emerald-500">Accede aquí</a>.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

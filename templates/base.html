@@ -1,0 +1,255 @@
+{% load static %}
+{% load utils %}
+
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-gray-50">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{% endblock %}"/>
+    
+    <!-- Title with dynamic page name -->
+    <title>{% block title %}NOVA | Inicio{% endblock %}</title>
+    
+    <!-- ... otras etiquetas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js" defer></script>
+    <!-- Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // Add any custom colors here
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    <!-- Font Awesome (optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom fonts (example with Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom head content block -->
+    {% block head %}{% endblock %}
+    
+    <style>
+        /* Critical CSS that should be inlined */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include "navbar.html" %}
+
+    <!-- Main Content -->
+    <main id="main-content" class="flex-grow">
+        {% block content %}
+        <!-- Page content will be inserted here -->
+        {% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 p-3 bg-indigo-900 text-white rounded-full shadow-lg hover:bg-indigo-950 transition-all duration-300 opacity-0 invisible translate-y-4">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <!-- Buscador del navbar-->
+    <script>
+        function liveSearch() {
+            return {
+            open: false,
+            query: '',
+            loading: false,
+            results: [],
+            toggle() {
+                this.open = !this.open;
+                if (this.open) this.$nextTick(() => this.$refs.input.focus());
+            },
+            close() {
+                this.open = false;
+                this.query = '';
+                this.results = [];
+            },
+            search() {
+                if (!this.query.trim()) {
+                this.results = [];
+                return;
+                }
+                this.loading = true;
+                fetch(`{% url 'product_search' %}?q=${encodeURIComponent(this.query)}`)
+                .then(r => r.json())
+                .then(data => {
+                    // esperamos que tu vista devuelva JSON: [{ name, slug, price, image }, ...]
+                    this.results = data.map(p => ({
+                    name: p.name,
+                    slug: p.slug,
+                    }));
+                })
+                .finally(() => this.loading = false);
+            }
+            }
+        }
+    </script>
+      
+    <script>
+        // Back to top button
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.remove('opacity-0', 'invisible', 'translate-y-4');
+                    backToTopButton.classList.add('opacity-100', 'visible', 'translate-y-0');
+                } else {
+                    backToTopButton.classList.add('opacity-0', 'invisible', 'translate-y-4');
+                    backToTopButton.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                }
+            });
+
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Add smooth scrolling to all links with hash
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Update URL without jumping
+                        if (history.pushState) {
+                            history.pushState(null, null, targetId);
+                        } else {
+                            location.hash = targetId;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- Block for additional scripts 
+    {% block scripts %}{% endblock %}
+    
+    <!-- Initialize any dynamic components 
+    <script>
+        // Initialize any dynamic components here
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dropdowns, modals, etc.
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('.dropdown-button');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                
+                if (button && menu) {
+                    button.addEventListener('click', () => {
+                        menu.classList.toggle('hidden');
+                    });
+                    
+                    // Close when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!dropdown.contains(e.target)) {
+                            menu.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+        });
+    </script>-->
+    
+    <!-- Banner de cookies -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white py-4 px-6 z-50 shadow-lg transform transition-transform duration-300 translate-y-full">
+        <div class="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex-1">
+                <p class="text-sm md:text-base">
+                    <i class="fas fa-cookie-bite mr-2"></i>
+                    Utilizamos cookies para mejorar tu experiencia de navegación. Puedes aceptar todas las cookies o configurar cuáles deseas permitir.
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button id="accept-necessary" class="text-xs md:text-sm px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors">
+                    Solo necesarias
+                </button>
+                <button id="accept-all" class="text-xs md:text-sm px-4 py-2 bg-indigo-700 hover:bg-indigo-600 rounded-md transition-colors">
+                    Aceptar todas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Manejo de cookies
+        document.addEventListener('DOMContentLoaded', function() {
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptNecessary = document.getElementById('accept-necessary');
+            const acceptAll = document.getElementById('accept-all');
+            
+            // Comprueba si ya se eligió una opción en esta sesión
+            const cookieChoice = sessionStorage.getItem('cookie-choice');
+            
+            if (!cookieChoice) {
+                // Mostrar el banner con una animación
+                setTimeout(() => {
+                    cookieBanner.classList.remove('translate-y-full');
+                }, 500);
+            }
+            
+            // Función para ocultar el banner
+            function hideBanner(choice) {
+                // Guardar elección en sessionStorage (durará solo esta sesión)
+                sessionStorage.setItem('cookie-choice', choice);
+                
+                // Ocultar con animación
+                cookieBanner.classList.add('translate-y-full');
+            }
+            
+            // Event listeners para los botones
+            acceptNecessary.addEventListener('click', () => {
+                hideBanner('necessary');
+            });
+            
+            acceptAll.addEventListener('click', () => {
+                hideBanner('all');
+            });
+        });
+    </script>
+</body>
+</html>

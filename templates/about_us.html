@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Conócenos | NOVA{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-no-repeat bg-cover bg-fixed" style="background-image: url('{% static "img/accounts-bg.jpg" %}'); background-size: cover; background-position: center;">
+  <div class="container mx-auto px-4 py-16 relative z-10">
+    <div class="max-w-4xl mx-auto bg-white bg-opacity-90 rounded-lg shadow-xl p-8">
+      <!-- Encabezado -->
+      <div class="text-center mb-12">
+        <img src="{% static 'img/NOVA_logo.svg' %}" alt="NOVA Logo" class="h-24 bg-black rounded-md mx-auto mb-4">
+        <h1 class="text-4xl font-light text-gray-900 mb-4">Sobre Nosotros</h1>
+        <div class="w-20 h-1 bg-indigo-600 mx-auto"></div>
+      </div>
+      
+      <!-- Grid de contenido -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- Columna 1: Misión y Valores -->
+        <div>
+          <h2 class="text-2xl font-medium text-indigo-800 mb-4">Nuestra Misión</h2>
+          <p class="text-gray-700 mb-6">
+            En NOVA, estamos comprometidos con llevar la tecnología aérea y de imagen al alcance de todos. Nuestra misión es proporcionar 
+            soluciones de drones y tecnología portátil de la más alta calidad, ofreciendo productos innovadores que expanden 
+            las posibilidades creativas y profesionales de nuestros clientes.
+          </p>
+          
+          <h2 class="text-2xl font-medium text-indigo-800 mb-4">Valores</h2>
+          <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li><span class="font-medium text-indigo-700">Innovación:</span> Siempre a la vanguardia de la tecnología de drones</li>
+            <li><span class="font-medium text-indigo-700">Calidad:</span> Compromiso inquebrantable con productos de primer nivel</li>
+            <li><span class="font-medium text-indigo-700">Servicio:</span> Atención personalizada y soporte técnico especializado</li>
+            <li><span class="font-medium text-indigo-700">Comunidad:</span> Fomentamos una comunidad activa de entusiastas</li>
+          </ul>
+        </div>
+        
+        <!-- Columna 2: Historia e Información -->
+        <div>
+          <h2 class="text-2xl font-medium text-indigo-800 mb-4">Nuestra Historia</h2>
+          <p class="text-gray-700 mb-6">
+            Fundada en 2020, NOVA nació de la visión compartida de un grupo de apasionados por la tecnología aérea y la fotografía. 
+            Lo que comenzó como un pequeño distribuidor especializado se ha convertido en uno de los principales proveedores 
+            de equipos DJI en España, con un enfoque centrado en la calidad y la experiencia del cliente.
+          </p>
+          
+          <h2 class="text-2xl font-medium text-indigo-800 mb-4">¿Por qué elegirnos?</h2>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <span class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-indigo-800 flex items-center justify-center mr-3">
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <p class="text-gray-700">Distribuidores oficiales con garantía completa</p>
+            </div>
+            <div class="flex items-start">
+              <span class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-indigo-800 flex items-center justify-center mr-3">
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <p class="text-gray-700">Soporte técnico especializado</p>
+            </div>
+            <div class="flex items-start">
+              <span class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-indigo-800 flex items-center justify-center mr-3">
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <p class="text-gray-700">Envío rápido y seguro en toda España</p>
+            </div>
+            <div class="flex items-start">
+              <span class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-indigo-800 flex items-center justify-center mr-3">
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              <p class="text-gray-700">Cursos y talleres especializados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Equipo -->
+      <div class="text-center">
+        <h2 class="text-2xl font-medium text-indigo-800 mb-8">Nuestro Equipo</h2>
+        <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
+          Detrás de NOVA hay un equipo de profesionales apasionados por la tecnología aérea y la fotografía. 
+          Pilotos certificados, ingenieros y especialistas en imagen que comparten su conocimiento para ofrecerte 
+          la mejor experiencia posible.
+        </p>
+        
+        <!-- Botón de contacto -->
+        <div class="mt-8">
+          <a href="#" class="inline-block bg-indigo-800 hover:bg-indigo-900 text-white text-center py-3 px-6 rounded-full transition-colors">
+            Contacta con nosotros
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
