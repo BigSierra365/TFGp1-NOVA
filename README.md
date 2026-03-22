@@ -5,15 +5,8 @@
 ![Alpine.js](https://img.shields.io/badge/Alpine.js-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-## 🚀 Elevator Pitch
+## 🚀 Descripción / Propósito
 **NOVA** es una plataforma de e-commerce de productos de terceros de alto rendimiento diseñada específicamente para el sector tecnológico avanzado (Drones, Sistemas de Energía y Dispositivos Portátiles). La solución aborda la complejidad de la venta técnica mediante un sistema de configuradores dinámicos que permiten al usuario personalizar sus compras a través de packs (*bundles*) y accesorios específicos en tiempo real, garantizando una experiencia de usuario fluida, visualmente impactante y técnicamente robusta.
-
----
-
-## 🎥 Demostración (EL CORE)
-Observa la fluidez de la interfaz y la lógica de negocio en acción:
-
-<video src="https://github.com/user-attachments/assets/8420a13c-d63f-4612-8e34-68fc2c356e75" width="100%" controls></video>
 
 ---
 
@@ -25,6 +18,13 @@ Observa la fluidez de la interfaz y la lógica de negocio en acción:
 | **PostgreSQL** | Base de datos relacional para una gestión de inventario y pedidos escalable. |
 | **Tailwind CSS** | Framework de estilos para un diseño moderno, responsive y "Premium Feel". |
 | **Alpine.js** | Reactividad ligera en el frontend para carruseles y actualizaciones de precio sin recarga. |
+
+---
+
+## 🎥 Demostración (EL CORE)
+Observa la fluidez de la interfaz y la lógica de negocio en acción:
+
+<video src="https://github.com/user-attachments/assets/8420a13c-d63f-4612-8e34-68fc2c356e75" width="100%" controls></video>
 
 ---
 
@@ -45,5 +45,7 @@ El sistema integra un **Backend Administrativo robusto** accesible en la ruta `/
 
 ---
 
-## 🧠 Arquitectura
+## 🧠 Arquitectura y Lógica
 El proyecto sigue el **Patrón MVT (Model-View-Template)** de Django, optimizando la separación de responsabilidades. La arquitectura se ha potenciado con una capa de **interactividad ligera (Alpine.js)** en el frontend, evitando la sobrecarga de frameworks pesados y garantizando tiempos de carga excepcionales mientras se mantiene una experiencia de usuario altamente reactiva y moderna.
+
+---
